@@ -100,6 +100,35 @@ body {
 .story-text.active {
     opacity: 1;
 }
+.photo-section {
+    background: #000;
+    color: white;
+    flex-direction: column;
+}
+
+.photo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1.5s ease;
+}
+
+.photo-wrapper.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sit-photo {
+    width: 300px;
+    margin-bottom: 30px;
+}
+
+.sit-text {
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+}
 </style>
 </head>
 
@@ -121,9 +150,13 @@ body {
     <div class="fade-overlay"></div>
 </section>
 
-<section id="sec4" class="section">
-    <div class="story-text">And this is our story…</div>
+<section id="sec4" class="section photo-section">
+    <div class="photo-wrapper">
+        <img src="images/sheenu-sit.png" class="sit-photo" alt="sheenu sitting">
+        <div class="sit-text">chalo tum bhi sun</div>
+    </div>
 </section>
+
 
 <script>
 // Fade-in animation
@@ -174,6 +207,14 @@ window.addEventListener('scroll', () => {
             overlay.classList.add('active');
             maxReached = true;
         }
+        const photoWrapper = document.querySelector('.photo-wrapper');
+        const sec4 = document.querySelector('#sec4');
+        
+        const rect4 = sec4.getBoundingClientRect();
+        if (rect4.top < windowHeight * 0.7) {
+            photoWrapper.classList.add('active');
+        }
+
     }
 
     // Show story text when section 4 enters
