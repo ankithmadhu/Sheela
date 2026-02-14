@@ -1,120 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Web site</title>
+<meta charset="UTF-8">
+<title>Sheela</title>
 
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
+<style>
+html {
+    scroll-behavior: smooth;
+}
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+}
 
-        .section {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            font-size: 2rem;
-            scroll-snap-align: start;
-        }
+.section {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2rem;
+    scroll-snap-align: start;
+}
 
-        #sec1 { background: #f9f9f9; }
-        #sec2 { background: #e8e8e8; }
-        #sec3 { background: #dcdcdc; }
-        #sec4 { background: #cfcfcf; }
+/* Section backgrounds */
+#sec1 { background: #f9f9f9; }
+#sec2 { background: #e8e8e8; }
+#sec3 { 
+    background: #ffffff; 
+    overflow: hidden;
+    flex-direction: column;
+}
+#sec4 { background: #cfcfcf; }
 
-        /* First section fade-in */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeUp 1.5s ease forwards;
-        }
+/* Fade in animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s ease;
+}
 
-        @keyframes fadeUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
 
-        /* Scroll reveal animation */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s ease;
-        }
+/* Dog section styling */
+.dog-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        #sec3 {
-            background: #ffffff;
-            overflow: hidden;
-        }
+.dog {
+    width: 250px;
+    transform: scale(0.6);
+    transition: transform 0.2s linear;
+}
 
-        .dog-wrapper {
-            height: 400px;
-            overflow: hidden;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-        }
+.dog-text {
+    margin-top: 30px;
+    font-size: 2rem;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
 
-        .dog {
-            width: 250px;
-            transform: scale(0.6);
-            transition: transform 0.2s linear;
-        }
-
-    </style>
-
+.dog-text.active {
+    opacity: 1;
+}
+</style>
 </head>
+
 <body>
 
-    <section id="sec1" class="section">
-        <div>Section 1: Intro Text Here</div>
-    </section>
+<section id="sec1" class="section">
+    <div class="reveal">Section 1: Intro Text Here</div>
+</section>
 
-    <section id="sec2" class="section">
-        <div style="color:black; font-size:40px;">
-            SECTION 2 WORKING
-        </div>
-    </section>
+<section id="sec2" class="section">
+    <div class="reveal">Section 2: Some More Text Here</div>
+</section>
 
-    <section id="sec3" class="section">
-        <div class="dog-wrapper">
-            <img src="images/sheenu.png" class="dog" alt="sheenu">
-        </div>
-    </section>
+<section id="sec3" class="section">
+    <div class="dog-wrapper">
+        <img src="images/sheenu.png" class="dog" alt="sheenu">
+        <div class="dog-text reveal">Sheenu is here 🐶</div>
+    </div>
+</section>
 
-    <section id="sec4" class="section">
-        <div>Section 4: Letter Placeholder</div>
-    </section>
+<section id="sec4" class="section">
+    <div class="reveal">Section 4: Letter Placeholder</div>
+</section>
 
-    <script>
-        const dog = document.querySelector('.dog');
-        const sec3 = document.querySelector('#sec3');
+<script>
+// Fade-in animation
+const reveals = document.querySelectorAll('.reveal');
 
-        window.addEventListener('scroll', () => {
-            const rect = sec3.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+        }
+    });
+}, { threshold: 0.4 });
 
-            if (rect.top < windowHeight && rect.bottom > 0) {
-                const progress = 1 - (rect.top / windowHeight);
-                const scale = 0.6 + progress * 0.8;
-                dog.style.transform = `scale(${scale})`;
-            }
-        });
-    </script>
+reveals.forEach(reveal => {
+    observer.observe(reveal);
+});
+
+// Dog zoom animation centered on screen
+const dog = document.querySelector('.dog');
+const sec3 = document.querySelector('#sec3');
+const dogText = document.querySelector('.dog-text');
+
+window.addEventListener('scroll', () => {
+    const rect = sec3.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    const sectionCenter = rect.top + rect.height / 2;
+    const screenCenter = windowHeight / 2;
+
+    const distance = Math.abs(sectionCenter - screenCenter);
+    const maxDistance = windowHeight / 2;
+
+    let progress = 1 - (distance / maxDistance);
+    progress = Math.max(0, Math.min(1, progress));
+
+    const scale = 0.6 + progress * 0.8;
+    dog.style.transform = `scale(${scale})`;
+
+    if (progress > 0.9) {
+        dogText.classList.add('active');
+    }
+});
+</script>
 
 </body>
 </html>
