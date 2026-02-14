@@ -56,6 +56,25 @@
             opacity: 1;
             transform: translateY(0);
         }
+        #sec3 {
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .dog-wrapper {
+            height: 400px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+.dog {
+    width: 250px;
+    transform: scale(0.6);
+    transition: transform 0.2s linear;
+}
+
     </style>
 
 </head>
@@ -70,28 +89,33 @@
     </section>
 
     <section id="sec3" class="section">
-        <div>Section 3: Dog Animation Placeholder</div>
+        <div class="dog-wrapper">
+            <img src="images/sheenu.png" class="dog" alt="sheenu">
+        </div>
     </section>
+
 
     <section id="sec4" class="section">
         <div>Section 4: Letter Placeholder</div>
     </section>
 
     <script>
-        const reveals = document.querySelectorAll('.reveal');
-
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.5 });
-
-        reveals.forEach(reveal => {
-            observer.observe(reveal);
+        const dog = document.querySelector('.dog');
+        const sec3 = document.querySelector('#sec3');
+    
+        window.addEventListener('scroll', () => {
+            const rect = sec3.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+    
+            if (rect.top < windowHeight && rect.bottom > 0) {
+                const progress = 1 - (rect.top / windowHeight);
+                const scale = 0.6 + progress * 0.8;
+    
+                dog.style.transform = `scale(${scale})`;
+            }
         });
     </script>
+
 
 </body>
 </html>
