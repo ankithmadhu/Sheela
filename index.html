@@ -240,21 +240,6 @@ const sec4 = document.querySelector('#sec4');
 const dog = document.querySelector('.dog');
 const sec3 = document.querySelector('#sec3');
 const dogText = document.querySelector('.dog-text');
-const fadeElements = document.querySelectorAll('.fade-up');
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('active');
-    } else {
-      entry.target.classList.remove('active'); // THIS makes it replay
-    }
-  });
-}, {
-  threshold: 0.3
-});
-
-fadeElements.forEach(el => observer.observe(el));
 
 
 let maxReached = false;
