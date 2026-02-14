@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <title>Sheela</title>
 
-<!-- Google Font -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -19,6 +18,7 @@ body {
     background: lavender;
 }
 
+/* Sections */
 .section {
     height: 100vh;
     display: flex;
@@ -28,9 +28,10 @@ body {
     text-align: center;
     padding: 40px;
     background: lavender;
+    position: relative;
 }
 
-/* Headings */
+/* Titles */
 .main-title {
     font-size: 3.5rem;
     font-weight: 700;
@@ -44,7 +45,7 @@ body {
     margin: auto;
 }
 
-/* Fade animation */
+/* Fade */
 .fade-up {
     opacity: 0;
     transform: translateY(40px);
@@ -56,10 +57,9 @@ body {
     transform: translateY(0);
 }
 
-/* Dog section */
+/* Section 3 - Zoom Dog */
 #sec3 {
     flex-direction: column;
-    position: relative;
 }
 
 .dog {
@@ -79,7 +79,7 @@ body {
     opacity: 1;
 }
 
-/* Section 4 image */
+/* Section 4 */
 .sit-photo {
     width: 300px;
     margin: 30px 0;
@@ -96,13 +96,23 @@ body {
     transform: translateY(0);
 }
 
-/* Section 5 letter */
-#sec5 {
-    flex-direction: column;
+/* Section 5 Letter */
+.letter-section {
+    position: relative;
+}
+
+.letter-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.letter-content {
+    width: 60%;
 }
 
 .letter-box {
-    width: 60%;
     max-height: 60vh;
     overflow-y: auto;
     background: white;
@@ -112,6 +122,14 @@ body {
     text-align: left;
     font-size: 1.1rem;
     line-height: 1.8;
+}
+
+/* Sitting dog beside box */
+.corner-dog {
+    position: absolute;
+    right: -40px;
+    bottom: -20px;
+    width: 220px;
 }
 </style>
 </head>
@@ -133,12 +151,12 @@ body {
     <div class="fade-up">
         <div class="main-title">Hello Again 🌸</div>
         <div class="sub-text">
-            Some stories don’t start loudly. They start softly… with moments, smiles, and little paws running into your life.
+            Some stories don’t start loudly. They start softly… with moments and little paws.
         </div>
     </div>
 </section>
 
-<!-- Section 3 (Zoom Dog) -->
+<!-- Section 3 -->
 <section id="sec3" class="section">
     <img src="images/sheenu.png" class="dog" alt="sheenu">
     <div class="dog-text">Sheenu is here 🐶</div>
@@ -153,18 +171,25 @@ body {
     </div>
 </section>
 
-<!-- Section 5 (Letter Holder) -->
-<section id="sec5" class="section">
-    <div class="main-title">Hello My Heart 💌</div>
-    <div class="letter-box">
-        This is where your 500 word letter will go.
-        <br><br>
-        You can write everything here — memories, emotions, small jokes,
-        the way Sheenu runs, the way she sits, the way she makes everything lighter.
-        <br><br>
-        This box scrolls internally if the text is long.
-        <br><br>
-        Add your full letter here…
+<!-- Section 5 -->
+<section id="sec5" class="section letter-section">
+    <div class="letter-container">
+
+        <div class="letter-content">
+            <div class="main-title">Hello My Heart 💌</div>
+
+            <div class="letter-box">
+                This is where your 500 word letter goes.
+                <br><br>
+                You can write everything here — memories, emotions, small jokes,
+                the way Sheenu runs, the way she sits, the way she makes everything lighter.
+                <br><br>
+                Keep writing… this box scrolls internally.
+            </div>
+        </div>
+
+        <img src="images/sheenu-sit.png" class="corner-dog" alt="sheenu sitting">
+
     </div>
 </section>
 
@@ -186,36 +211,43 @@ fadeElements.forEach(el => observer.observe(el));
 const photoWrapper = document.querySelector('.photo-wrapper');
 const sec4 = document.querySelector('#sec4');
 
+// Dog zoom lock
+const dog = document.querySelector('.dog');
+const sec3 = document.querySelector('#sec3');
+const dogText = document.querySelector('.dog-text');
+
+let maxReached = false;
+
 window.addEventListener('scroll', () => {
 
-    const rect4 = sec4.getBoundingClientRect();
     const windowHeight = window.innerHeight;
 
+    // Section 4 fade
+    const rect4 = sec4.getBoundingClientRect();
     if (rect4.top < windowHeight * 0.7) {
         photoWrapper.classList.add('active');
     }
 
-    // Dog zoom lock
-    const dog = document.querySelector('.dog');
-    const sec3 = document.querySelector('#sec3');
-    const dogText = document.querySelector('.dog-text');
+    // LOCKED zoom
+    if (!maxReached) {
+        const rect3 = sec3.getBoundingClientRect();
+        const sectionCenter = rect3.top + rect3.height / 2;
+        const screenCenter = windowHeight / 2;
 
-    const rect3 = sec3.getBoundingClientRect();
-    const sectionCenter = rect3.top + rect3.height / 2;
-    const screenCenter = windowHeight / 2;
+        const distance = Math.abs(sectionCenter - screenCenter);
+        const maxDistance = windowHeight / 2;
 
-    const distance = Math.abs(sectionCenter - screenCenter);
-    const maxDistance = windowHeight / 2;
+        let progress = 1 - (distance / maxDistance);
+        progress = Math.max(0, Math.min(1, progress));
 
-    let progress = 1 - (distance / maxDistance);
-    progress = Math.max(0, Math.min(1, progress));
+        const scale = 0.6 + progress * 0.8;
+        dog.style.transform = `scale(${scale})`;
 
-    const scale = 0.6 + progress * 0.8;
-    dog.style.transform = `scale(${scale})`;
-
-    if (progress > 0.95) {
-        dog.style.transform = `scale(1.4)`;
-        dogText.classList.add('active');
+        if (progress > 0.95) {
+            dog.style.transform = `scale(1.4)`;
+            dogText.classList.add('active');
+            maxReached = true;
+        }
     }
 });
 </script>
