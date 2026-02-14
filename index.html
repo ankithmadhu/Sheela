@@ -3,6 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Web site</title>
+    <style>
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        overflow-y: scroll;
+        scroll-snap-type: y mandatory;
+    }
+
+    .section {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-size: 2rem;
+        scroll-snap-align: start;
+    }
+
+    #sec1 { background: #f9f9f9; }
+    #sec2 { background: #e8e8e8; }
+    #sec3 { background: #dcdcdc; }
+    #sec4 { background: #cfcfcf; }
+</style>
+
 </head>
 <body>
     <h1>Hello</h1>
