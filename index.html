@@ -30,13 +30,27 @@
         #sec2 { background: #e8e8e8; }
         #sec3 { background: #dcdcdc; }
         #sec4 { background: #cfcfcf; }
+
+        .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 1.5s ease forwards;
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
     </style>
 
 </head>
 <body>
 
     <section id="sec1" class="section">
-        <div>Section 1: Intro Text Here</div>
+        <div class="fade-in">Section 1: Intro Text Here</div>
     </section>
 
     <section id="sec2" class="section">
