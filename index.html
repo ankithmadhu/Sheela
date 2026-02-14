@@ -81,11 +81,11 @@
 <body>
 
     <section id="sec1" class="section">
-        <div class="fade-in">Section 1: Intro Text Here</div>
+        <div>Section 1: Intro Text Here</div>
     </section>
 
     <section id="sec2" class="section">
-        <div class="reveal">Section 2a: Some More Text Here</div>
+        <div>Section 2: Some More Text Here</div>
     </section>
 
     <section id="sec3" class="section">
@@ -94,7 +94,6 @@
         </div>
     </section>
 
-
     <section id="sec4" class="section">
         <div>Section 4: Letter Placeholder</div>
     </section>
@@ -102,20 +101,18 @@
     <script>
         const dog = document.querySelector('.dog');
         const sec3 = document.querySelector('#sec3');
-    
+
         window.addEventListener('scroll', () => {
             const rect = sec3.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-    
+
             if (rect.top < windowHeight && rect.bottom > 0) {
                 const progress = 1 - (rect.top / windowHeight);
                 const scale = 0.6 + progress * 0.8;
-    
                 dog.style.transform = `scale(${scale})`;
             }
         });
     </script>
-
 
 </body>
 </html>
