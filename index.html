@@ -43,6 +43,8 @@
         transform: translateY(0);
     }
 }
+        <div class="reveal">Section 2: Some More Text Here</div>
+
 
     </style>
 
@@ -54,7 +56,7 @@
     </section>
 
     <section id="sec2" class="section">
-        <div>Section 2: Some More Text Here</div>
+        <div class="reveal">Section 2: Some More Text Here</div>
     </section>
 
     <section id="sec3" class="section">
@@ -64,6 +66,22 @@
     <section id="sec4" class="section">
         <div>Section 4: Letter Placeholder</div>
     </section>
+
+    <script>
+    const reveals = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.5 });
+
+    reveals.forEach(reveal => {
+        observer.observe(reveal);
+    });
+</script>
 
 </body>
 </html>
