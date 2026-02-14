@@ -111,12 +111,16 @@ reveals.forEach(reveal => {
     observer.observe(reveal);
 });
 
-// Dog zoom animation centered on screen
+// Dog zoom animation (LOCK at max zoom)
 const dog = document.querySelector('.dog');
 const sec3 = document.querySelector('#sec3');
 const dogText = document.querySelector('.dog-text');
 
+let maxReached = false;   // <-- This locks the zoom
+
 window.addEventListener('scroll', () => {
+    if (maxReached) return;  // stop recalculating once max hit
+
     const rect = sec3.getBoundingClientRect();
     const windowHeight = window.innerHeight;
 
@@ -132,11 +136,14 @@ window.addEventListener('scroll', () => {
     const scale = 0.6 + progress * 0.8;
     dog.style.transform = `scale(${scale})`;
 
-    if (progress > 0.9) {
+    if (progress > 0.95) {
+        dog.style.transform = `scale(1.4)`;  // final zoom level
         dogText.classList.add('active');
+        maxReached = true;   // LOCK IT
     }
 });
 </script>
+
 
 </body>
 </html>
