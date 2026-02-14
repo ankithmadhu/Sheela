@@ -210,7 +210,17 @@ body {
 </section>
 
 <script>
-// Fade animation
+let lastScrollTop = 0;
+let scrollingDown = true;
+
+// Detect scroll direction
+window.addEventListener("scroll", () => {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    scrollingDown = scrollTop > lastScrollTop;
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+});
+
+// Fade animation (works both directions)
 const fadeElements = document.querySelectorAll('.fade-up');
 
 const observer = new IntersectionObserver(entries => {
@@ -219,33 +229,34 @@ const observer = new IntersectionObserver(entries => {
             entry.target.classList.add('active');
         }
     });
-}, { threshold: 0.4 });
+}, { threshold: 0.3 });
 
 fadeElements.forEach(el => observer.observe(el));
 
-// Section 4 fade
+
+// Section references
 const photoWrapper = document.querySelector('.photo-wrapper');
 const sec4 = document.querySelector('#sec4');
-
-// Dog zoom lock
 const dog = document.querySelector('.dog');
 const sec3 = document.querySelector('#sec3');
 const dogText = document.querySelector('.dog-text');
 
 let maxReached = false;
 
+// Main scroll behavior
 window.addEventListener('scroll', () => {
 
     const windowHeight = window.innerHeight;
 
-    // Section 4 fade
+    // Always allow section 4 fade
     const rect4 = sec4.getBoundingClientRect();
     if (rect4.top < windowHeight * 0.7) {
         photoWrapper.classList.add('active');
     }
 
-    // LOCKED zoom
-    if (!maxReached) {
+    // Only animate zoom when scrolling DOWN
+    if (scrollingDown && !maxReached) {
+
         const rect3 = sec3.getBoundingClientRect();
         const sectionCenter = rect3.top + rect3.height / 2;
         const screenCenter = windowHeight / 2;
@@ -267,6 +278,7 @@ window.addEventListener('scroll', () => {
     }
 });
 </script>
+
 
 </body>
 </html>
