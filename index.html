@@ -26,17 +26,20 @@ body {
     scroll-snap-align: start;
 }
 
-/* Section backgrounds */
 #sec1 { background: #f9f9f9; }
 #sec2 { background: #e8e8e8; }
 #sec3 { 
     background: #ffffff; 
     overflow: hidden;
     flex-direction: column;
+    position: relative;
 }
-#sec4 { background: #cfcfcf; }
+#sec4 { 
+    background: #000000; 
+    color: white;
+}
 
-/* Fade in animation */
+/* Fade-in animation */
 .reveal {
     opacity: 0;
     transform: translateY(40px);
@@ -48,11 +51,12 @@ body {
     transform: translateY(0);
 }
 
-/* Dog section styling */
+/* Dog section */
 .dog-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
+    z-index: 2;
 }
 
 .dog {
@@ -69,6 +73,31 @@ body {
 }
 
 .dog-text.active {
+    opacity: 1;
+}
+
+/* Dark fade overlay */
+.fade-overlay {
+    position: absolute;
+    inset: 0;
+    background: black;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    pointer-events: none;
+}
+
+.fade-overlay.active {
+    opacity: 0.6;
+}
+
+/* Story text */
+.story-text {
+    font-size: 3rem;
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+.story-text.active {
     opacity: 1;
 }
 </style>
@@ -89,10 +118,11 @@ body {
         <img src="images/sheenu.png" class="dog" alt="sheenu">
         <div class="dog-text reveal">Sheenu is here 🐶</div>
     </div>
+    <div class="fade-overlay"></div>
 </section>
 
 <section id="sec4" class="section">
-    <div class="reveal">Section 4: Letter Placeholder</div>
+    <div class="story-text">And this is our story…</div>
 </section>
 
 <script>
@@ -111,39 +141,50 @@ reveals.forEach(reveal => {
     observer.observe(reveal);
 });
 
-// Dog zoom animation (LOCK at max zoom)
+// Dog cinematic zoom
 const dog = document.querySelector('.dog');
 const sec3 = document.querySelector('#sec3');
 const dogText = document.querySelector('.dog-text');
+const overlay = document.querySelector('.fade-overlay');
+const storyText = document.querySelector('.story-text');
 
-let maxReached = false;   // <-- This locks the zoom
+let maxReached = false;
 
 window.addEventListener('scroll', () => {
-    if (maxReached) return;  // stop recalculating once max hit
 
     const rect = sec3.getBoundingClientRect();
     const windowHeight = window.innerHeight;
 
-    const sectionCenter = rect.top + rect.height / 2;
-    const screenCenter = windowHeight / 2;
+    if (!maxReached) {
+        const sectionCenter = rect.top + rect.height / 2;
+        const screenCenter = windowHeight / 2;
 
-    const distance = Math.abs(sectionCenter - screenCenter);
-    const maxDistance = windowHeight / 2;
+        const distance = Math.abs(sectionCenter - screenCenter);
+        const maxDistance = windowHeight / 2;
 
-    let progress = 1 - (distance / maxDistance);
-    progress = Math.max(0, Math.min(1, progress));
+        let progress = 1 - (distance / maxDistance);
+        progress = Math.max(0, Math.min(1, progress));
 
-    const scale = 0.6 + progress * 0.8;
-    dog.style.transform = `scale(${scale})`;
+        const scale = 0.6 + progress * 0.8;
+        dog.style.transform = `scale(${scale})`;
 
-    if (progress > 0.95) {
-        dog.style.transform = `scale(1.4)`;  // final zoom level
-        dogText.classList.add('active');
-        maxReached = true;   // LOCK IT
+        if (progress > 0.95) {
+            dog.style.transform = `scale(1.4)`;
+            dogText.classList.add('active');
+            overlay.classList.add('active');
+            maxReached = true;
+        }
+    }
+
+    // Show story text when section 4 enters
+    const sec4 = document.querySelector('#sec4');
+    const rect4 = sec4.getBoundingClientRect();
+
+    if (rect4.top < windowHeight * 0.6) {
+        storyText.classList.add('active');
     }
 });
 </script>
-
 
 </body>
 </html>
