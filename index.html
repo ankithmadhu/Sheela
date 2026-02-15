@@ -158,25 +158,46 @@ body {
     width: 220px;
 }
     
+.music-wrapper {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 999;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+}
+
+.music-wrapper.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
 .music-button {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(0, 0, 0, 0.75);
-  color: white;
-  font-size: 20px;
-  cursor: pointer;
-  z-index: 999;
-  transition: all 0.3s ease;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .music-button:hover {
-  transform: scale(1.1);
-  background: black;
+    transform: scale(1.1);
+}
+
+.music-label {
+    font-size: 14px;
+    opacity: 0.8;
+    white-space: nowrap;
 }
 
 </style>
@@ -263,11 +284,14 @@ body {
     </div>
 </section>
 
-<audio id="bgMusic" loop>
-  <source src="music/song.mp3" type="audio/mpeg">
-</audio>
 
-<button id="musicBtn" class="music-button">▶</button>
+
+<div class="music-wrapper" id="musicWrapper">
+    <button id="musicBtn" class="music-button">▶</button>
+    <div class="music-label">A song I could relate for you</div>
+</div>
+
+<audio id="bgMusic" src="your-song.mp3"></audio>
 
 
 
@@ -388,19 +412,32 @@ window.addEventListener("scroll", function () {
 });
 </script>
 <script>
-const audio = document.getElementById("bgMusic");
-const btn = document.getElementById("musicBtn");
+const sec5 = document.getElementById("sec5");
+const musicWrapper = document.getElementById("musicWrapper");
+const musicBtn = document.getElementById("musicBtn");
+const bgMusic = document.getElementById("bgMusic");
 
-audio.volume = 0.4; // soft background volume
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            musicWrapper.classList.add("show");
+        } else {
+            musicWrapper.classList.remove("show");
+        }
+    });
+}, { threshold: 0.6 });
 
-btn.addEventListener("click", function () {
-  if (audio.paused) {
-    audio.play();
-    btn.innerText = "⏸";
-  } else {
-    audio.pause();
-    btn.innerText = "▶";
-  }
+observer.observe(sec5);
+
+// Play / Pause
+musicBtn.addEventListener("click", () => {
+    if (bgMusic.paused) {
+        bgMusic.play();
+        musicBtn.innerHTML = "⏸";
+    } else {
+        bgMusic.pause();
+        musicBtn.innerHTML = "▶";
+    }
 });
 </script>
 
