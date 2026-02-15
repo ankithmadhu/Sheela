@@ -179,58 +179,6 @@ body {
   background: black;
 }
 
-.letter-content {
-    width: 100%;
-    max-width: 700px;
-    margin: auto;
-    text-align: center;
-}
-
-.main-title {
-    font-size: 32px;
-    margin-bottom: 20px;
-}
-
-.letter-box {
-    height: 300px;              /* Fixed height for scrolling */
-    overflow-y: auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    text-align: left;
-    line-height: 1.8;
-}
-
-/* Hide button initially */
-.final-btn-wrapper {
-    margin-top: 25px;
-    opacity: 0;
-    transform: translateY(20px);
-    pointer-events: none;
-    transition: all 0.6s ease;
-}
-
-/* Show when triggered */
-.final-btn-wrapper.show {
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
-}
-
-.open-page-btn {
-    display: inline-block;
-    padding: 12px 28px;
-    background: black;
-    color: white;
-    text-decoration: none;
-    border-radius: 30px;
-    transition: 0.3s ease;
-}
-
-.open-page-btn:hover {
-    transform: scale(1.05);
-}
-
 
 </style>
 </head>
@@ -308,11 +256,6 @@ body {
                 And chill saas le..
                 <br><br>
                 Anyway things go you will be my first priority and it will remain the same.
-            </div>
-            <div class="final-btn-wrapper" id="finalBtn">
-                <a href="hello.html" class="open-page-btn">
-                Continue 💌
-                </a>
             </div>
         </div>
 
@@ -462,28 +405,6 @@ window.addEventListener("scroll", function () {
 
   const scale = 0.6 + progress * 0.8;
   dog.style.transform = `scale(${scale})`;
-
-});
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    const letterBox = document.getElementById("letterBox");
-    const finalBtn = document.getElementById("finalBtn");
-
-    letterBox.addEventListener("scroll", function () {
-
-        const scrollTop = letterBox.scrollTop;
-        const visibleHeight = letterBox.clientHeight;
-        const totalHeight = letterBox.scrollHeight;
-
-        // Check if fully scrolled
-        if (scrollTop + visibleHeight >= totalHeight - 5) {
-            finalBtn.classList.add("show");
-        }
-
-    });
 
 });
 </script>
