@@ -158,24 +158,25 @@ body {
     width: 220px;
 }
     
-.music-wrapper {
-    position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 9999;
-
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
+.music-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 999;
+  transition: all 0.3s ease;
 }
 
-.music-wrapper.show {
-    opacity: 1;
-    pointer-events: auto;
+.music-button:hover {
+  transform: scale(1.1);
+  background: black;
 }
 
 
@@ -263,15 +264,31 @@ body {
     </div>
 </section>
 
+<audio id="bgMusic" loop>
+  <source src="music/song.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn" class="music-button">▶</button>
 
 
-<div class="music-wrapper" id="musicWrapper">
-    <button id="musicBtn" class="music-button">▶</button>
-    <div class="music-label">A song I could relate for you</div>
-</div>
 
-<audio id="bgMusic" src="your-song.mp3"></audio>
 
+<script>
+const audio = document.getElementById("bgMusic");
+const btn = document.getElementById("musicBtn");
+
+audio.volume = 0.4; // soft background volume
+
+btn.addEventListener("click", function () {
+  if (audio.paused) {
+    audio.play();
+    btn.innerText = "⏸";
+  } else {
+    audio.pause();
+    btn.innerText = "▶";
+  }
+});
+</script>
 
 
 <script>
@@ -390,43 +407,6 @@ window.addEventListener("scroll", function () {
 
 });
 </script>
-    
-<script>
-window.addEventListener("DOMContentLoaded", function () {
-
-    const sec5 = document.getElementById("sec5");
-    const musicWrapper = document.getElementById("musicWrapper");
-    const musicBtn = document.getElementById("musicBtn");
-    const bgMusic = document.getElementById("bgMusic");
-
-    // Show button when sec5 is in viewport
-    window.addEventListener("scroll", function () {
-        const rect = sec5.getBoundingClientRect();
-
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-            musicWrapper.classList.add("show");
-        } else {
-            musicWrapper.classList.remove("show");
-        }
-    });
-
-    // Play / Pause
-    musicBtn.addEventListener("click", function () {
-        if (bgMusic.paused) {
-            bgMusic.play();
-            musicBtn.innerHTML = "⏸";
-        } else {
-            bgMusic.pause();
-            musicBtn.innerHTML = "▶";
-        }
-    });
-
-});
-</script>
-
-
-
-
 
 </body>
 </html>
