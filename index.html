@@ -166,11 +166,11 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    z-index: 999;
+    z-index: 9999;
 
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.6s ease;
+    transition: opacity 0.5s ease;
 }
 
 .music-wrapper.show {
@@ -178,27 +178,6 @@ body {
     pointer-events: auto;
 }
 
-.music-button {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: none;
-    background: rgba(0, 0, 0, 0.85);
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.music-button:hover {
-    transform: scale(1.1);
-}
-
-.music-label {
-    font-size: 14px;
-    opacity: 0.8;
-    white-space: nowrap;
-}
 
 </style>
 </head>
@@ -411,35 +390,40 @@ window.addEventListener("scroll", function () {
 
 });
 </script>
+    
 <script>
-const sec5 = document.getElementById("sec5");
-const musicWrapper = document.getElementById("musicWrapper");
-const musicBtn = document.getElementById("musicBtn");
-const bgMusic = document.getElementById("bgMusic");
+window.addEventListener("DOMContentLoaded", function () {
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
+    const sec5 = document.getElementById("sec5");
+    const musicWrapper = document.getElementById("musicWrapper");
+    const musicBtn = document.getElementById("musicBtn");
+    const bgMusic = document.getElementById("bgMusic");
+
+    // Show button when sec5 is in viewport
+    window.addEventListener("scroll", function () {
+        const rect = sec5.getBoundingClientRect();
+
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
             musicWrapper.classList.add("show");
         } else {
             musicWrapper.classList.remove("show");
         }
     });
-}, { threshold: 0.6 });
 
-observer.observe(sec5);
+    // Play / Pause
+    musicBtn.addEventListener("click", function () {
+        if (bgMusic.paused) {
+            bgMusic.play();
+            musicBtn.innerHTML = "⏸";
+        } else {
+            bgMusic.pause();
+            musicBtn.innerHTML = "▶";
+        }
+    });
 
-// Play / Pause
-musicBtn.addEventListener("click", () => {
-    if (bgMusic.paused) {
-        bgMusic.play();
-        musicBtn.innerHTML = "⏸";
-    } else {
-        bgMusic.pause();
-        musicBtn.innerHTML = "▶";
-    }
 });
 </script>
+
 
 
 
