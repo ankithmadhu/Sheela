@@ -156,6 +156,8 @@ body {
     right: -40px;
     bottom: -20px;
     width: 220px;
+}
+    
 .music-button {
   position: fixed;
   bottom: 30px;
@@ -177,7 +179,6 @@ body {
   background: black;
 }
 
-}
 </style>
 </head>
 
@@ -261,6 +262,14 @@ body {
 
     </div>
 </section>
+
+<audio id="bgMusic" loop>
+  <source src="music/song.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn" class="music-button">▶</button>
+
+
 
 <script>
 let lastScrollTop = 0;
@@ -395,12 +404,6 @@ btn.addEventListener("click", function () {
 });
 </script>
 
-
-<audio id="bgMusic" loop>
-  <source src="music/song.mp3" type="audio/mpeg">
-</audio>
-
-<button id="musicBtn" class="music-button">▶</button>
 
 
 
