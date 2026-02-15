@@ -156,6 +156,27 @@ body {
     right: -40px;
     bottom: -20px;
     width: 220px;
+.music-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 999;
+  transition: all 0.3s ease;
+}
+
+.music-button:hover {
+  transform: scale(1.1);
+  background: black;
+}
+
 }
 </style>
 </head>
@@ -357,6 +378,30 @@ window.addEventListener("scroll", function () {
 
 });
 </script>
+<script>
+const audio = document.getElementById("bgMusic");
+const btn = document.getElementById("musicBtn");
+
+audio.volume = 0.4; // soft background volume
+
+btn.addEventListener("click", function () {
+  if (audio.paused) {
+    audio.play();
+    btn.innerText = "⏸";
+  } else {
+    audio.pause();
+    btn.innerText = "▶";
+  }
+});
+</script>
+
+
+<audio id="bgMusic" loop>
+  <source src="music/song.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicBtn" class="music-button">▶</button>
+
 
 
 </body>
